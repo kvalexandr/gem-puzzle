@@ -1,6 +1,5 @@
 export default class Win {
-  constructor(board) {
-    this.board = board;
+  constructor() {
     this.createWin();
   }
 
@@ -10,6 +9,7 @@ export default class Win {
   }
 
   createWinNewGame(move, time) {
+    this.el.innerHTML = '';
     const congrat = document.createElement('div');
     congrat.classList.add('congrat');
     congrat.innerHTML = 'Congratulations!';
