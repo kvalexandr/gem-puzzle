@@ -20,3 +20,8 @@ export function addToLocalStorage(name, data) {
 export function getFromLocalStorage(name, empty = null) {
   return JSON.parse(localStorage.getItem(name) || empty);
 }
+
+export function randomIndex(min, max) {
+  const rand = min - 0.5 + Math.random() * (max - min + 1);
+  return Math.round(rand);
+}

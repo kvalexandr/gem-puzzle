@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 import Gem from './Gem';
-import { getFromLocalStorage } from './utils';
+import { getFromLocalStorage, randomIndex } from './utils';
 
 export default class Board {
   constructor(container, size) {
@@ -13,6 +13,7 @@ export default class Board {
 
     this.board = this.createBoard();
     this.container.appendChild(this.board);
+    this.width = this.board.offsetWidth;
 
     this.newGame();
   }
@@ -28,6 +29,7 @@ export default class Board {
     const settings = getFromLocalStorage('settings', '{}');
     this.size = settings.size || this.size;
     this.board.innerHTML = '';
+    this.imageSrc = `images/${randomIndex(1, 9)}.jpg`;
     this.move = 0;
     this.counter = 0;
     this.pause = false;
@@ -56,7 +58,6 @@ export default class Board {
       this.gems.push(new Gem(this, i));
     }
     this.shuffle();
-    // this.start();
   }
 
   swapGems(i, j) {

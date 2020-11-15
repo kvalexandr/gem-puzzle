@@ -25,6 +25,11 @@ export default class Gem {
 
     this.gem.style.width = `${this.width}%`;
     this.gem.style.height = `${this.height}%`;
+
+    const { x: left, y: top } = this.getXY(index);
+
+    this.gem.style.backgroundImage = `url(${this.board.imageSrc})`;
+    this.gem.style.backgroundPosition = `-${(this.board.width / this.board.size) * left}px -${(this.board.width / this.board.size) * top}px`;
   }
 
   setPosition(index) {
@@ -36,6 +41,7 @@ export default class Gem {
   createGem() {
     const gem = document.createElement('div');
     gem.classList.add('gem');
+    gem.style.backgroundSize = `${this.board.width}px`;
 
     gem.addEventListener('click', () => {
       const emptyGem = this.board.findEmpty();
