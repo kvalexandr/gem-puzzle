@@ -90,6 +90,12 @@ export default class Board {
     return this.win;
   }
 
+  sound() {
+    const audio = new Audio('audio/btn.wav');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
   load() {
     const load = [0, 1, 2, 3, 5, 8, 6, 4, 7];
 

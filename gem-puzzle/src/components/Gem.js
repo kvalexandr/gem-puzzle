@@ -61,6 +61,8 @@ export default class Gem {
       this.board.onSwap(this.board.move);
       this.board.swapGems(emptyGem, currentGem);
 
+      this.board.sound();
+
       if (this.board.isWin()) {
         // this.board.stop();
         this.board.onFinished();

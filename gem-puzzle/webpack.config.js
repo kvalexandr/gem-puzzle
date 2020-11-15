@@ -64,6 +64,10 @@ module.exports = {
         from: path.resolve(__dirname, 'src/images'),
         to: path.resolve(__dirname, 'dist/images'),
       },
+      {
+        from: path.resolve(__dirname, 'src/audio'),
+        to: path.resolve(__dirname, 'dist/audio'),
+      },
     ]),
     new MiniCssExtractPlugin({
       filename: filename('css'),
