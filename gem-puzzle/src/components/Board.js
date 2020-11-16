@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 import Gem from './Gem';
-import { getFromLocalStorage, randomIndex } from './utils';
+import { addToLocalStorage, getFromLocalStorage, randomIndex } from './utils';
 
 export default class Board {
   constructor(container, size) {
@@ -48,7 +48,6 @@ export default class Board {
   }
 
   stop() {
-    console.log('stop ', this.timerID);
     clearInterval(this.timerID);
     this.pause = true;
   }
@@ -96,14 +95,26 @@ export default class Board {
     audio.play();
   }
 
-  load() {
-    const load = [0, 1, 2, 3, 5, 8, 6, 4, 7];
-
+  load(load) {
+    // const load = [0, 1, 2, 3, 5, 8, 6, 4, 7];
     for (let position = 0; position < this.size ** 2; position += 1) {
       this.gems.push(new Gem(this, load[position], position));
     }
 
     this.start();
-    console.log(this.gems);
+  }
+
+  score() {
+    const score = {
+      date: new Date().toLocaleDateString(),
+      move: this.move,
+      time: this.counter,
+      size: this.size
+    };
+
+    const scoreStoarage = getFromLocalStorage('score', '[]').slice(0, 9);
+    scoreStoarage.unshift(score);
+    scoreStoarage.sort((a, b) => a.move - b.move);
+    addToLocalStorage('score', scoreStoarage);
   }
 }

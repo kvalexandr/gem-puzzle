@@ -182,3 +182,30 @@ body {
   text-align: center;
   margin-bottom: 30px;
 }
+
+.score {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  &__title {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  &__date {
+    width: 30%;
+  }
+
+  &__size {
+    width: 15%;
+  }
+
+  &__move {
+    width: 20%;
+  }
+  
+  &__time {
+    width: 35%;
+  }
+}

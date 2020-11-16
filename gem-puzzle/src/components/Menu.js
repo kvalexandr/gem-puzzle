@@ -1,4 +1,5 @@
-import { addToLocalStorage, getFromLocalStorage } from './utils';
+/* eslint-disable class-methods-use-this */
+import { addToLocalStorage, getFromLocalStorage, getTimeText } from './utils';
 
 export default class Menu {
   constructor(board) {
@@ -28,6 +29,35 @@ export default class Menu {
     this.newgame.classList.add('menu__link');
     menuItemNewGame.appendChild(this.newgame);
 
+    const menuItemSave = document.createElement('div');
+    menuItemSave.classList.add('menu_item');
+    this.mainmenu.appendChild(menuItemSave);
+    this.save = document.createElement('a');
+    this.save.innerHTML = 'Save game';
+    this.save.href = '#';
+    this.save.classList.add('menu__link');
+    this.save.addEventListener('click', () => {
+      const saveGemsPosition = [];
+      this.board.gems.forEach(item => {
+        saveGemsPosition.push(item.index);
+      });
+      addToLocalStorage('save', saveGemsPosition);
+    });
+    menuItemSave.appendChild(this.save);
+
+    const menuItemLoad = document.createElement('div');
+    menuItemLoad.classList.add('menu_item');
+    this.mainmenu.appendChild(menuItemLoad);
+    this.load = document.createElement('a');
+    this.load.innerHTML = 'Load game';
+    this.load.href = '#';
+    this.load.classList.add('menu__link');
+    this.load.addEventListener('click', () => {
+      const loadGems = getFromLocalStorage('save');
+      this.board.load(loadGems);
+    });
+    menuItemLoad.appendChild(this.load);
+
     const menuItemScore = document.createElement('div');
     menuItemScore.classList.add('menu_item');
     this.mainmenu.appendChild(menuItemScore);
@@ -35,6 +65,10 @@ export default class Menu {
     this.scores.innerHTML = 'Best scores';
     this.scores.href = '#';
     this.scores.classList.add('menu__link');
+    this.scores.addEventListener('click', () => {
+      this.createMenuScore();
+      this.menuChange(this.mainmenu, this.scoremenu);
+    });
     menuItemScore.appendChild(this.scores);
 
     const menuItemSettings = document.createElement('div');
@@ -101,7 +135,75 @@ export default class Menu {
     this.el.appendChild(this.settingsmenu);
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  createMenuScore() {
+    this.scoremenu = document.createElement('div');
+    this.scoremenu.classList.add('menu-score');
+    this.scoremenu.classList.add('menu-block');
+    this.scoremenu.classList.add('menu-hide');
+
+    const menuTitle = document.createElement('h2');
+    menuTitle.classList.add('menu_title');
+    menuTitle.innerHTML = 'Best scores';
+    this.scoremenu.appendChild(menuTitle);
+
+    const divScoreTitle = document.createElement('div');
+    divScoreTitle.classList.add('score');
+
+    const divDateTitle = document.createElement('div');
+    divDateTitle.classList.add('score__date', 'score__title');
+    divDateTitle.innerHTML = 'Date';
+    divScoreTitle.appendChild(divDateTitle);
+
+    const divSizeTitle = document.createElement('div');
+    divSizeTitle.classList.add('score__size', 'score__title');
+    divSizeTitle.innerHTML = 'Size';
+    divScoreTitle.appendChild(divSizeTitle);
+
+    const divMoveTitle = document.createElement('div');
+    divMoveTitle.classList.add('score__move', 'score__title');
+    divMoveTitle.innerHTML = 'Moves';
+    divScoreTitle.appendChild(divMoveTitle);
+
+    const divTimeTitle = document.createElement('div');
+    divTimeTitle.classList.add('score__time', 'score__title');
+    divTimeTitle.innerHTML = 'Time';
+    divScoreTitle.appendChild(divTimeTitle);
+
+    this.scoremenu.appendChild(divScoreTitle);
+
+    const scoreStoarage = getFromLocalStorage('score', '[]');
+    scoreStoarage.forEach(item => {
+      const divScore = document.createElement('div');
+      divScore.classList.add('score');
+
+      const divDate = document.createElement('div');
+      divDate.classList.add('score__date');
+      divDate.innerHTML = item.date;
+      divScore.appendChild(divDate);
+
+      const divSize = document.createElement('div');
+      divSize.classList.add('score__size');
+      divSize.innerHTML = `${item.size}x${item.size}`;
+      divScore.appendChild(divSize);
+
+      const divMove = document.createElement('div');
+      divMove.classList.add('score__move');
+      divMove.innerHTML = item.move;
+      divScore.appendChild(divMove);
+
+      const divTime = document.createElement('div');
+      divTime.classList.add('score__time');
+      divTime.innerHTML = getTimeText(item.time);
+      divScore.appendChild(divTime);
+
+      this.scoremenu.appendChild(divScore);
+    });
+
+    this.linkBack(this.scoremenu);
+
+    this.el.appendChild(this.scoremenu);
+  }
+
   menuChange(from, to) {
     from.classList.add('menu-hide');
     to.classList.remove('menu-hide');
@@ -116,7 +218,6 @@ export default class Menu {
     menu.appendChild(back);
 
     back.addEventListener('click', () => {
-      console.log('back');
       this.menuChange(menu, this.mainmenu);
     });
 

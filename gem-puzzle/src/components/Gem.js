@@ -64,7 +64,7 @@ export default class Gem {
       this.board.sound();
 
       if (this.board.isWin()) {
-        // this.board.stop();
+        this.board.score();
         this.board.onFinished();
       }
     });
