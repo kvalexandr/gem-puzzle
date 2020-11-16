@@ -69,7 +69,7 @@ export default class Board {
     for (let i = 0; i < this.size ** 2; i += 1) {
       this.gems.push(new Gem(this, i));
     }
-    // this.shuffle();
+    this.shuffle();
   }
 
   load(load) {

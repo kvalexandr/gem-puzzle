@@ -13,6 +13,7 @@ export default class Menu {
 
     this.createMenuMain();
     this.createMenuSettings();
+    this.createMenuAbout();
   }
 
   createMenuMain() {
@@ -53,6 +54,18 @@ export default class Menu {
       this.menuChange(this.mainmenu, this.settingsmenu);
     });
     menuItemSettings.appendChild(this.settings);
+
+    const menuItemAbout = document.createElement('div');
+    menuItemAbout.classList.add('menu_item');
+    this.mainmenu.appendChild(menuItemAbout);
+    this.about = document.createElement('a');
+    this.about.innerHTML = 'Readme';
+    this.about.href = '#';
+    this.about.classList.add('menu__link');
+    this.about.addEventListener('click', () => {
+      this.menuChange(this.mainmenu, this.aboutmenu);
+    });
+    menuItemAbout.appendChild(this.about);
 
     this.el.appendChild(this.mainmenu);
   }
@@ -104,6 +117,36 @@ export default class Menu {
     this.linkBack(this.settingsmenu);
 
     this.el.appendChild(this.settingsmenu);
+  }
+
+  createMenuAbout() {
+    this.aboutmenu = document.createElement('div');
+    this.aboutmenu.classList.add('menu-about');
+    this.aboutmenu.classList.add('menu-block');
+    this.aboutmenu.classList.add('menu-hide');
+
+    const menuTitle = document.createElement('h2');
+    menuTitle.classList.add('menu_title');
+    menuTitle.innerHTML = 'About game';
+    this.aboutmenu.appendChild(menuTitle);
+
+    const divDescr = document.createElement('div');
+    divDescr.classList.add('about');
+
+    const divDescrItem = document.createElement('div');
+    divDescrItem.innerHTML = `
+      1. Игра начинается сразу после загрузки<br><br>
+      2. Сохранение игры происходит в каждый момент времени и при перезагрузке будет начинаться с того места где закончили.<br><br>
+      3. В настройках можно выбрать размер поля.<br><br>
+      4. После выбора размера поля, необходимо начать новую игру.
+    `;
+
+    divDescr.appendChild(divDescrItem);
+
+    this.aboutmenu.appendChild(divDescr);
+    this.linkBack(this.aboutmenu);
+
+    this.el.appendChild(this.aboutmenu);
   }
 
   createMenuScore() {
