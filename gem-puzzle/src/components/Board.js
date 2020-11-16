@@ -15,7 +15,7 @@ export default class Board {
     this.container.appendChild(this.board);
     this.width = this.board.offsetWidth;
 
-    this.newGame();
+    this.newGame(true);
   }
 
   createBoard() {
@@ -25,17 +25,29 @@ export default class Board {
     return board;
   }
 
-  newGame() {
+  newGame(load = false) {
+    const loadStorage = getFromLocalStorage('save');
     const settings = getFromLocalStorage('settings', '{}');
-    this.size = settings.size || this.size;
-    this.board.innerHTML = '';
-    this.imageSrc = `images/${randomIndex(1, 9)}.jpg`;
-    this.move = 0;
-    this.counter = 0;
+    if (loadStorage && load) {
+      this.size = loadStorage.size;
+      this.board.innerHTML = '';
+      this.imageSrc = loadStorage.imageSrc;
+      this.move = loadStorage.move;
+      this.counter = loadStorage.counter;
+      this.gems = [];
+      this.load(loadStorage.gems);
+    } else {
+      this.size = settings.size || this.size;
+      this.board.innerHTML = '';
+      this.imageSrc = `images/${randomIndex(1, 9)}.jpg`;
+      this.move = 0;
+      this.counter = 0;
+      this.gems = [];
+      this.setup();
+    }
+
     this.pause = false;
     this.win = false;
-    this.gems = [];
-    this.setup();
     this.start();
   }
 
@@ -44,6 +56,7 @@ export default class Board {
     this.timerID = setInterval(() => {
       this.counter += 1;
       this.onTime(this.counter);
+      this.save();
     }, 1000);
   }
 
@@ -57,6 +70,12 @@ export default class Board {
       this.gems.push(new Gem(this, i));
     }
     // this.shuffle();
+  }
+
+  load(load) {
+    for (let position = 0; position < this.size ** 2; position += 1) {
+      this.gems.push(new Gem(this, load[position], position));
+    }
   }
 
   swapGems(i, j) {
@@ -95,13 +114,21 @@ export default class Board {
     audio.play();
   }
 
-  load(load) {
-    // const load = [0, 1, 2, 3, 5, 8, 6, 4, 7];
-    for (let position = 0; position < this.size ** 2; position += 1) {
-      this.gems.push(new Gem(this, load[position], position));
-    }
+  save() {
+    const saveGemsPosition = [];
+    this.gems.forEach(item => {
+      saveGemsPosition.push(item.index);
+    });
 
-    this.start();
+    const saveData = {
+      gems: saveGemsPosition,
+      size: this.size,
+      imageSrc: this.imageSrc,
+      move: this.move,
+      counter: this.counter
+    };
+
+    addToLocalStorage('save', saveData);
   }
 
   score() {

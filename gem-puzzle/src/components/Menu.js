@@ -29,35 +29,6 @@ export default class Menu {
     this.newgame.classList.add('menu__link');
     menuItemNewGame.appendChild(this.newgame);
 
-    const menuItemSave = document.createElement('div');
-    menuItemSave.classList.add('menu_item');
-    this.mainmenu.appendChild(menuItemSave);
-    this.save = document.createElement('a');
-    this.save.innerHTML = 'Save game';
-    this.save.href = '#';
-    this.save.classList.add('menu__link');
-    this.save.addEventListener('click', () => {
-      const saveGemsPosition = [];
-      this.board.gems.forEach(item => {
-        saveGemsPosition.push(item.index);
-      });
-      addToLocalStorage('save', saveGemsPosition);
-    });
-    menuItemSave.appendChild(this.save);
-
-    const menuItemLoad = document.createElement('div');
-    menuItemLoad.classList.add('menu_item');
-    this.mainmenu.appendChild(menuItemLoad);
-    this.load = document.createElement('a');
-    this.load.innerHTML = 'Load game';
-    this.load.href = '#';
-    this.load.classList.add('menu__link');
-    this.load.addEventListener('click', () => {
-      const loadGems = getFromLocalStorage('save');
-      this.board.load(loadGems);
-    });
-    menuItemLoad.appendChild(this.load);
-
     const menuItemScore = document.createElement('div');
     menuItemScore.classList.add('menu_item');
     this.mainmenu.appendChild(menuItemScore);

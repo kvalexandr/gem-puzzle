@@ -21,6 +21,10 @@ export function getFromLocalStorage(name, empty = null) {
   return JSON.parse(localStorage.getItem(name) || empty);
 }
 
+export function deleteToLocalStorage(name) {
+  localStorage.removeItem(name);
+}
+
 export function randomIndex(min, max) {
   const rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);

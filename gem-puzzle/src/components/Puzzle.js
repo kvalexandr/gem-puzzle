@@ -3,7 +3,7 @@ import Header from './Header';
 import Board from './Board';
 import Menu from './Menu';
 import Win from './Win';
-import { getTime, getTimeText } from './utils';
+import { getTime, getTimeText, deleteToLocalStorage } from './utils';
 
 export default class Puzzle {
   constructor(size) {
@@ -31,10 +31,15 @@ export default class Puzzle {
         this.board.board.appendChild(this.win.el);
         this.win.el.classList.add('menu-open');
         this.header.header.classList.add('hide');
+        deleteToLocalStorage('save');
         this.win.createWinNewGame(this.board.move, getTimeText(this.board.counter));
         this.btnNewGame(this.win);
       }
     };
+
+    const [minuteSave, secondSave] = getTime(this.board.counter);
+    this.header.timer.innerHTML = `${minuteSave} : ${secondSave}`;
+    this.header.move.innerHTML = this.board.move;
 
     this.board.onTime = (timer) => {
       const [minute, second] = getTime(timer);
