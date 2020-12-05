@@ -97,6 +97,24 @@ export default class Board {
       const j = Math.floor(Math.random() * (i + 1));
       this.swapGems(i, j);
     }
+    if (!this.isSolved()) this.shuffle();
+  }
+
+  isSolved() {
+    let cnt = 0;
+    for (let i = 0; i < this.gems.length; i += 1) {
+      if (this.gems[i].index !== this.size ** 2 - 1) {
+        for (let j = i + 1; j < this.gems.length; j += 1) {
+          if (this.gems[i].index > this.gems[j].index) {
+            cnt += 1;
+          }
+        }
+      } else if ((this.size ** 2) % 2 === 0) {
+        const row = Math.floor(i / this.size) + 1;
+        cnt += row;
+      }
+    }
+    return cnt % 2 === 0;
   }
 
   isWin() {
